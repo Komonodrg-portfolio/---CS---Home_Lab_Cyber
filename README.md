@@ -62,7 +62,7 @@ This method involves installing Wazuh Server on a standalone PC/Laptop.  This de
 Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" target="_blank">Ventoy USB drive</a> and boot PC/laptop off of a <a href="https://releases.ubuntu.com/jammy/" target="_blank">Ubuntu 22.04 Server.iso</a> file to intiate installation.  Make sure to be on network during installation and eventually after it completes installation, you'll be granted with login instructions and credentials for web gui to access from the browser of another computer on the network:<br>
 <br>
 <p float="center">
-  <img src="images/UbuntuServerSelection.png" width="200" />
+  <img src="images/UbuntuServerSelect.png" width="200" />
   <img src="images/Ventoy.png" width="200" />
   <img src="images/wazuhinstallcomplete.png" width="200" />
           
