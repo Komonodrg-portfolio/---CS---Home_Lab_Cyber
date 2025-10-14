@@ -9,11 +9,11 @@
 This project demonstrates the deployment of a **Wazuh SIEM & XRD instance** three different ways to in order to provide different methods to deploy based on hardware and financial resources, in conjuction with aligning with principles of my [mission](https://github.com/Komonodrg-portfolio/Mission/).  
 
 It highlights skills in:
-- Barebone deployment, for dedicated security devices
-- Virtualization and hypervisor management (**VMWare, Proxmox VE**)  
+- Barebone deployment, for dedicated security device
+- Virtualization and hypervisor management (**VMWare**)  
 - Security Information and Event Management (**Wazuh**)
 - Actions against unified view of threats and automates remediation (**XDR**) 
-- System administration and Linux server setup  
+- System (OS) administration and Windows/Linux server setup  
 - Log collection, monitoring, and security alerting
 
 ---
@@ -21,7 +21,6 @@ It highlights skills in:
 
 | Tool       | Purpose                              |
 |------------|--------------------------------------|
-| Proxmox VE     | Type-1 hypervisor for virtualization         |
 | VMWare Workstation | Type-2 hypervisor for virtualization         |
 | Wazuh | Open-source SIEM & XDR platform         |
 | Debian/Ubuntu    | Guest OS for Wazuh server          |
@@ -31,28 +30,10 @@ It highlights skills in:
 
 ---
 
-## 📂 Repository Structure
-```plaintext
-.
-├── docs/                # Deployment notes, diagrams, and documentation
-├── configs/             # Example config files (Proxmox VM, Wazuh settings)
-├── screenshots/         # Screenshots for setup and final dashboard
-├── scripts/             # Helper scripts for automation
-└── README.md            # Project overview (this file)
+## 📂 Topology
 
-[ Bare-metal Hardware ]
-          │
-      Proxmox VE
-          │
-   ┌───────────────┐
-   │ Wazuh Server  │
-   │   (VM)        │
-   └───────────────┘
-          │
-   ┌──────┴──────┐
-   │ Wazuh Agents│ (Linux, Windows, Network Devices)
-   └─────────────┘
-```
+---
+
 ## 🛠️  Setup Instructions
 <details>
  <summary><h4><b>  A)  Barebone Deployment"</b></h4></summary>
