@@ -55,6 +55,36 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
           
 </details>
 
+<details>
+ <summary><h4><b>  A)  Windows Server 2022 Setup</b></h4></summary>
+  <br> 
+This intial setup of Windows Server 2022 from within VMWare. <br>  
+<br>
+<img src="images/Server1.png" width="400"/>  <img src="images/EVENGVM6.png" width="400"/>
+ <br>
+1) Change server name <br> 
+2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)<br> 
+3) Disable IPv6 while allowing DHCP for IPv4<br> 
+4) Change Time Zone<br> 
+<br> 
+
+ 
+Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" target="_blank">Ventoy USB drive</a> and boot PC/laptop off of a <a href="https://releases.ubuntu.com/jammy/" target="_blank">Ubuntu 22.04 Server.iso</a> file to intiate installation.  Make sure to be on network during installation and eventually after it completes installation, you'll be granted with login instructions and credentials for web gui to access from the browser of another computer on the network:<br>
+<br>
+<p float="center">
+  <img src="images/UbuntuServerSelect.png" width="200" />
+  <img src="images/Ventoy.png" width="200" />
+  <img src="images/wazuhinstallcomplete.png" width="200" />
+          
+| VMWare Workstation | Type-2 hypervisor for virtualization         |
+| Wazuh | Open-source SIEM & XDR platform         |
+| Debian/Ubuntu    | Guest OS for Wazuh server          |
+| Nginx  | Reverse proxy for web dashboard (optional)                      |
+| Suricata, Wazuh, Syslog  | Log collection and injestion agents and protocol         |
+          
+</details>
+
+
 🚀 Deployment Steps
 1. Install Proxmox VE on Bare-Metal
 
