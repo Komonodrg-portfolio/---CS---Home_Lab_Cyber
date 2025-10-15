@@ -60,7 +60,7 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
   <br> 
 This intial setup of Windows Server 2022 from within VMWare. <br>  
 <br>
-<img src="images/Server1.png" width="400"/>  <img src="images/EVENGVM6.png" width="400"/>
+<img src="images/Server1.png" width="400"/>  
  <br>
 1) Change server name <br> 
 2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)<br> 
