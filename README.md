@@ -56,18 +56,20 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
 </details>
 
 <details>
- <summary><h4><b>  A)  Windows Server 2022 Setup</b></h4></summary>
+ <summary><h4><b>  B)  Windows Server 2022 Setup</b></h4></summary>
   <br> 
-This intial setup of Windows Server 2022 from within VMWare. <br>  
+This is intial setup of Windows Server 2022 from within VMWare. <br>  
 <br>
-<img src="images/Server1.png" width="400"/>  
+
+ <p align="left">
+  <img src="images/Server1.png" width="800" /><br>
  <br>
 1) Change server name <br> 
 2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)<br> 
-3) Disable IPv6 while allowing DHCP for IPv4<br> 
+3) Disable IPv6 while and setup static IP address for server <br> 
 4) Change Time Zone<br> 
-<br> 
-
+  
+<h4>Promote Server to Domain Controller</h4>
  
 Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" target="_blank">Ventoy USB drive</a> and boot PC/laptop off of a <a href="https://releases.ubuntu.com/jammy/" target="_blank">Ubuntu 22.04 Server.iso</a> file to intiate installation.  Make sure to be on network during installation and eventually after it completes installation, you'll be granted with login instructions and credentials for web gui to access from the browser of another computer on the network:<br>
 <br>
@@ -84,46 +86,4 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
           
 </details>
 
-
-🚀 Deployment Steps
-1. Install Proxmox VE on Bare-Metal
-
-Install Proxmox from ISO and configure storage/networking.
-
-Apply latest updates.
-
-2. Create VM for Wazuh Server
-
-Allocate resources: 4 vCPU, 8 GB RAM, 100 GB Disk.
-
-Install Debian/Ubuntu minimal.
-
-3. Install & Configure Wazuh
-
-Update packages and install dependencies.
-
-Deploy Wazuh Manager + Dashboard.
-
-Configure HTTPS for secure web access.
-
-4. Add Wazuh Agents
-
-Install agents on Linux/Windows endpoints.
-
-Register them with Wazuh Manager.
-
-Confirm agent connectivity.
-
-5. Test & Validate
-
-Simulate failed SSH login or other security events.
-
-Confirm alerts in Wazuh dashboard.
-
-📊 Sample Output
-
-Wazuh Dashboard (placeholder screenshot):
-
-
-Example Alert:
 
