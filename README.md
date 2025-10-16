@@ -104,7 +104,7 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 1) Startup gpedit.msc > Computer Configuration > Windows Settings > Windows Firewall w/ Advanced Security
    > Windows Defender Firewall Properties
 2) Turn on Firewall, blocking inbound connections, allowing outbound connections
-3) Do the same for Profile & Public Profiles
+3) Do the same for Private & Public Profiles
 4) Customize...
 5) Remove check to enable Logs, select "Yes" for Log dropped packets & successful connections
 6) ...Do the same on Private and Public Profiles
@@ -128,4 +128,20 @@ sysmon64.exe -i sysmonconfig.xml
 <p align="left">
   <img src="images/Win4.png" width="950" /><br>
 
+<h4> Install Wazuh Agent </h4>
+
+```
+From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
+    └─ Select "Windows"
+    └─ Put in Wazuh IP address in "Assign a server address" field
+    └─ Enter Hostname for Win VM in "Assign an agent name field"
+    └─ Copy command from "4) Run the following commands to download and install the agent" field
+```
+<p align="left">
+  <img src="images/Win5.png" width="950" /><br>
+
+<h4> Enable OSQuery Logging </h4>
+
+1) Download & Install [OSquery](https://osquery.io/downloads/official/5.19.0) for windows, select latest stable version.
+2) 
 
