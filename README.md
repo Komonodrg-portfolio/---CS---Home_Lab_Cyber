@@ -108,6 +108,6 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 4) Customize...
 5) Remove check to enable Logs, select "Yes" for Log dropped packets & successful connections
 6) Do the same on Private and Public Profiles
-   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)
-   └─ Enable Script Block Logging DON'T enable invocation headers
 ```
+
+
