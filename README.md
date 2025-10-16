@@ -116,4 +116,16 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 2) Download [Olaf Hartong](https://github.com/olafhartong/sysmon-modular) sysmon configuration file and extract contents to C:/Program Files/Sysmon folder<br>
 
 <p align="left">
-  <img src="images/Win3.png" width="800" /><br>
+  <img src="images/Win3.png" width="500" /><br>
+
+3) From CMD (administrative), navigate to C:/Program Files/Sysmon folder & run, which installs sysmon with olaf config file:
+```
+cd C:\Program Files\Sysmon
+sysmon64.exe -i sysmonconfig.xml
+```
+4) Verify successful Sysmon installation via `services.msc`:
+
+<p align="left">
+  <img src="images/Win4.png" width="950" /><br>
+
+
