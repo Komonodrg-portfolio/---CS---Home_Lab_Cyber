@@ -36,7 +36,7 @@ It highlights skills in:
 
 ## 🛠️  Setup Instructions
 <details>
- <summary><h4><b>  A)  Barebone Deployment"</b></h4></summary>
+ <summary><h4><b>  A)  Wazuh Server (standalone) Deployment"</b></h4></summary>
   <br> 
 This method involves installing Wazuh Server on a standalone PC/Laptop.  This deployment is best to use if you want a dedicated security appliance to monitor and protect your home network.<br>  
 <br>
@@ -63,27 +63,48 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
 
  <p align="left">
   <img src="images/Server1.png" width="800" /><br>
- <br>
-1) Change server name <br> 
-2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)<br> 
-3) Disable IPv6 while and setup static IP address for server <br> 
-4) Change Time Zone<br> 
-  
-<h4>Promote Server to Domain Controller</h4>
- 
-Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" target="_blank">Ventoy USB drive</a> and boot PC/laptop off of a <a href="https://releases.ubuntu.com/jammy/" target="_blank">Ubuntu 22.04 Server.iso</a> file to intiate installation.  Make sure to be on network during installation and eventually after it completes installation, you'll be granted with login instructions and credentials for web gui to access from the browser of another computer on the network:<br>
 <br>
-<p float="center">
-  <img src="images/UbuntuServerSelect.png" width="200" />
-  <img src="images/Ventoy.png" width="200" />
-  <img src="images/wazuhinstallcomplete.png" width="200" />
-          
-| VMWare Workstation | Type-2 hypervisor for virtualization         |
-| Wazuh | Open-source SIEM & XDR platform         |
-| Debian/Ubuntu    | Guest OS for Wazuh server          |
-| Nginx  | Reverse proxy for web dashboard (optional)                      |
-| Suricata, Wazuh, Syslog  | Log collection and injestion agents and protocol         |
-          
+
+```
+1) Change server name
+   └─ Computer Name > click "Change..." > Enter new name > OK > Restart
+
+2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)
+   └─ Remote Desktop > select "Allow remote connections to this computer"
+
+3) Disable IPv6 while and setup static IP address & DNS for server
+   └─ Ethernet0 > right click on network adapter, select "Properties" > uncheck "IPv6" >
+      select IPv4 > Set up static IP & DNS servers
+
+4) Change Time Zone
+   └─ "Change time zone..." > select appropriately
+```
 </details>
 
+<details>
+ <summary><h4><b>  C)  Windows 10 (Victim) VM Setup</b></h4></summary>
+  <br> 
+<h4> Enable Powershell Logging </h4>  
+<br>
+
+ <p align="left">
+  <img src="images/Win1.png" width="800" /><br>
+<br>
+
+```
+1) Change server name
+   └─ Computer Name > click "Change..." > Enter new name > OK > Restart
+
+2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)
+   └─ Remote Desktop > select "Allow remote connections to this computer"
+
+3) Disable IPv6 while and setup static IP address & DNS for server
+   └─ Ethernet0 > right click on network adapter, select "Properties" > uncheck "IPv6" >
+      select IPv4 > Set up static IP & DNS servers
+
+4) Change Time Zone
+   └─ "Change time zone..." > select appropriately
+```
+</details>
+<h4>Promote Server to Domain Controller</h4>
 
