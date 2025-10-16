@@ -85,11 +85,9 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
  <summary><h4><b>  C)  Windows 10 (Victim) VM Setup</b></h4></summary>
   <br> 
 <h4> Enable Powershell Logging </h4>  
-<br>
 
  <p align="left">
   <img src="images/Win1.png" width="800" /><br>
-<br>
 
 ```
 1) Change server name
