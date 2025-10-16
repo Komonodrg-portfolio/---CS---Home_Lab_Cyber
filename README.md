@@ -107,7 +107,11 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 3) Do the same for Profile & Public Profiles
 4) Customize...
 5) Remove check to enable Logs, select "Yes" for Log dropped packets & successful connections
-6) Do the same on Private and Public Profiles
+6) ...Do the same on Private and Public Profiles
 ```
+<h4> Enable SYSMON Logging </h4> 
+<br>
 
+1) Download [Sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) and extract it to C:/Program Files/Sysmon folder
+2) Download 
 
