@@ -87,22 +87,27 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
 <h4> Enable Powershell Logging </h4>  
 
  <p align="left">
-  <img src="images/Win1.png" width="800" /><br>
+  <img src="images/WIn1.png" width="800" /><br>
 
 ```
-1) Change server name
-   └─ Computer Name > click "Change..." > Enter new name > OK > Restart
-
-2) Enable Remote Desktop (allowing vulnerability for extra log generation/events from within cyber range)
-   └─ Remote Desktop > select "Allow remote connections to this computer"
-
-3) Disable IPv6 while and setup static IP address & DNS for server
-   └─ Ethernet0 > right click on network adapter, select "Properties" > uncheck "IPv6" >
-      select IPv4 > Set up static IP & DNS servers
-
-4) Change Time Zone
-   └─ "Change time zone..." > select appropriately
+Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Powershell
+   └─ Enable Module Logging, click "Show" and enter "*" wildcard to encompass all modules
+   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)
+   └─ Enable Script Block Logging DON'T enable invocation headers
 ```
-</details>
-<h4>Promote Server to Domain Controller</h4>
+<h4> Enable Firewall (Defender) Logging </h4> 
 
+<p align="left">
+  <img src="images/Win2.png" width="800" /><br>
+
+```
+1) Startup gpedit.msc > Computer Configuration > Windows Settings > Windows Firewall w/ Advanced Security
+   > Windows Defender Firewall Properties
+2) Turn on Firewall, blocking inbound connections, allowing outbound connections
+3) Do the same for Profile & Public Profiles
+4) Customize...
+5) Remove check to enable Logs, select "Yes" for Log dropped packets & successful connections
+6) Do the same on Private and Public Profiles
+   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)
+   └─ Enable Script Block Logging DON'T enable invocation headers
+```
