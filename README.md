@@ -112,6 +112,8 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 <h4> Enable SYSMON Logging </h4> 
 <br>
 
-1) Download [Sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) and extract it to C:/Program Files/Sysmon folder
-2) Download 
+1) Download [Sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) and extract it to C:/Program Files/Sysmon folder<br>
+2) Download [Olaf Hartong](https://github.com/olafhartong/sysmon-modular) sysmon configuration file and extract contents to C:/Program Files/Sysmon folder<br>
 
+<p align="left">
+  <img src="images/Win3.png" width="800" /><br>
