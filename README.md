@@ -109,7 +109,7 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 5) Remove check to enable Logs, select "Yes" for Log dropped packets & successful connections
 6) ...Do the same on Private and Public Profiles
 ```
-<h4> Enable SYSMON Logging </h4> 
+<h4> Enable SYSMON & OSQuery Logging </h4> 
 <br>
 
 1) Download [Sysmon](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon) and extract it to C:/Program Files/Sysmon folder<br>
@@ -128,6 +128,11 @@ sysmon64.exe -i sysmonconfig.xml
 <p align="left">
   <img src="images/Win4.png" width="950" /><br>
 
+5) Download & Install [OSquery](https://osquery.io/downloads/official/5.19.0) for windows, select latest stable version & run installation.  Confirm successful installation:
+
+<p align="left">
+  <img src="images/Win6.png" width="950" /><br>
+   
 <h4> Install Wazuh Agent </h4>
 
 ```
@@ -136,12 +141,11 @@ From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
     └─ Put in Wazuh IP address in "Assign a server address" field
     └─ Enter Hostname for Win VM in "Assign an agent name field"
     └─ Copy command from "4) Run the following commands to download and install the agent" field
+       and enter command into a Powershell (administrative) shell
+    └─ Start agent by issuing command "NET START Wazuh"
+    └─ Confirm injestion of logs from within Wazuh server (gui)
 ```
 <p align="left">
-  <img src="images/Win5.png" width="950" /><br>
+  <img src="images/Win7.png" width="950" /><br>
 
-<h4> Enable OSQuery Logging </h4>
-
-1) Download & Install [OSquery](https://osquery.io/downloads/official/5.19.0) for windows, select latest stable version.
-2) 
 
