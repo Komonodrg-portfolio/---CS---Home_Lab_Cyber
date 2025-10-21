@@ -146,6 +146,6 @@ From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
     └─ Confirm injestion of logs from within Wazuh server (gui)
 ```
 <p align="left">
-  <img src="images/Win7.png" width="950" /><br>
+  <img src="images/Wazuh.png" width="950" /><br>
 
 
