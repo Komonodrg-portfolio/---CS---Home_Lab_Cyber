@@ -41,18 +41,45 @@ It highlights skills in:
   <br> 
 This method involves installing Wazuh Server on a standalone PC/Laptop.  This deployment is best to use if you want a dedicated security appliance to monitor and protect your home network.<br>  
 <br>
-Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" target="_blank">Ventoy USB drive</a> and boot PC/laptop off of a <a href="https://releases.ubuntu.com/jammy/" target="_blank">Ubuntu 22.04 Server.iso</a> file to intiate installation.  Make sure to be on network during installation and eventually after it completes installation, you'll be granted with login instructions and credentials for web gui to access from the browser of another computer on the network:<br>
+Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" target="_blank">Ventoy USB drive</a> and boot PC/laptop off of a <a href="https://releases.ubuntu.com/jammy/" target="_blank">Ubuntu 22.04 Server.iso</a> file to intiate installation.  Make sure to be on network during installation and eventually after it completes installation, you'll need to install the Wazuh Server.<br>
+<br>
+
+<p float="center">
+  <img src="images/UbuntuServerSelect.png" width="500" />
+  <img src="images/Ventoy.png" width="450" />
+ 
+```
+1) Ensure Ubuntu 22.04 is updated
+   └─ sudo apt update && sudo apt upgrade -y
+
+2) Ensure firewall (ufw) is active and  proper ports are open, allowing for proper communication of server
+   └─ sudo ufw reset
+   └─ sudo sudo ufw default deny incoming
+      sudo ufw default allow outgoing
+   └─ sudo ufw allow 1514/tcp
+      sudo ufw allow 1514/udp
+      sudo ufw allow 1515/tcp
+      sudo ufw allow 443/tcp
+      sudo ufw allow 9200/tcp
+      sudo ufw allow 55000/tcp
+      sudo ufw allow 22/tcp       #anti SSH lockout
+   └─ sudo ufw enable
+   └─ sudo ufw status verbose
+
+3) Install dependencies:
+   └─ sudo apt install curl apt-transport-https gnupg2 wget unzip -y
+
+4) Install installation script and make it executable:
+   └─ curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
+   └─ sudo bash ./wazuh-install.sh -a
+
+```
+ 
+You'll be granted with login instructions and credentials for Wazuh server web gui to access from the browser of another computer on the network:<br>
 <br>
 <p float="center">
-  <img src="images/UbuntuServerSelect.png" width="200" />
-  <img src="images/Ventoy.png" width="200" />
-  <img src="images/wazuhinstallcomplete.png" width="200" />
+  <img src="images/wazuhinstallcomplete.png" width="800" />
           
-| VMWare Workstation | Type-2 hypervisor for virtualization         |
-| Wazuh | Open-source SIEM & XDR platform         |
-| Debian/Ubuntu    | Guest OS for Wazuh server          |
-| Nginx  | Reverse proxy for web dashboard (optional)                      |
-| Suricata, Wazuh, Syslog  | Log collection and injestion agents and protocol         |
           
 </details>
 
