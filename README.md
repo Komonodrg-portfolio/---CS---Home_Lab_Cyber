@@ -9,7 +9,7 @@
 This project demonstrates the deployment of a standalone **Wazuh SIEM & XRD instance**  in order to holistically triage of systems (windows, linux) and network in order to strengthen my skills while seeking to become a Cybersecurity professional. In conjuction with aligning with principles of my [mission](https://github.com/Komonodrg-portfolio/Mission/), my aim is to deploy on hardware already possessed.  
 
 It highlights skills in:
-- Barebone deployment, for dedicated security device
+- Barebone deployment, for dedicated security device with firewall lockdown implementation
 - Virtualization and hypervisor management (**VMWare**)
 - Active Directory administration 
 - Security Information and Event Management (**Wazuh**)
@@ -69,7 +69,7 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
 3) Install dependencies:
    └─ sudo apt install curl apt-transport-https gnupg2 wget unzip -y
 
-4) Install installation script and make it executable:
+4) Install installation script and executable without pause:
    └─ curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
    └─ sudo bash ./wazuh-install.sh -a
 
