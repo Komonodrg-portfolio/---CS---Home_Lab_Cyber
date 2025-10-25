@@ -6,11 +6,12 @@
 # Wazuh SIEM & XDR Deployment  
 
 ## 📌 Goals
-This project demonstrates the deployment of a **Wazuh SIEM & XRD instance** three different ways to in order to provide different methods to deploy based on hardware and financial resources, in conjuction with aligning with principles of my [mission](https://github.com/Komonodrg-portfolio/Mission/).  
+This project demonstrates the deployment of a standalone **Wazuh SIEM & XRD instance**  in order to holistically triage of systems (windows, linux) and network in order to strengthen my skills while seeking to become a Cybersecurity professional. In conjuction with aligning with principles of my [mission](https://github.com/Komonodrg-portfolio/Mission/), my aim is to deploy on hardware already possessed.  
 
 It highlights skills in:
 - Barebone deployment, for dedicated security device
-- Virtualization and hypervisor management (**VMWare**)  
+- Virtualization and hypervisor management (**VMWare**)
+- Active Directory administration 
 - Security Information and Event Management (**Wazuh**)
 - Actions against unified view of threats and automates remediation (**XDR**) 
 - System (OS) administration and Windows/Linux server setup  
