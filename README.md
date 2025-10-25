@@ -123,10 +123,13 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
 cd C:\Program Files\Sysmon
 sysmon64.exe -i sysmonconfig.xml
 ```
-4) Verify successful Sysmon installation via `services.msc`:
+4) Verify successful Sysmon installation and running via `services.msc` & `Event Viewer (Windows Logs > Application and Service Logs > Microsoft > Windows > Sysmon)`:
 
 <p align="left">
   <img src="images/Win4.png" width="950" /><br>
+
+<p align="left">
+  <img src="images/Win8.png" width="950" /><br>
 
 5) Download & Install [OSquery](https://osquery.io/downloads/official/5.19.0) for windows, select latest stable version & run installation.  Confirm successful installation:
 
