@@ -179,4 +179,52 @@ From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
 <p align="left">
   <img src="images/Wazuh.png" width="950" /><br>
 
+<h4> Send Sysmon & OSquery Logs to Wazuh Manager through Wazuh Agent </h4>
+
+```
+From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.conf (had to open via Notepad
+- Run as admin) > add config lines to end of already configured <logfile> entries.  
+    └─ For Sysmon:
+       <localfile>
+         <location>Microsoft-Windows-Sysmon/Operational</location>
+         <log_format>eventchannel</log_format>
+       </localfile>
+
+                             -OR-
+
+- Edit configuration file on Wazuh Server to reflect all agents in an agent grouping via adding config via
+  nano /var/ossec/etc/shared/Windows<GroupWhereWindowsVMis>/agents.conf file & saving:  
+    └─ <localfile>
+         <location>Microsoft-Windows-Sysmon/Operational</location>
+         <log_format>eventchannel</log_format>
+       </localfile>
+    └─ Verfify OK after saving of file via /var/ossec/bin/verify-agent-conf:
+
+       wazuh@wazuh:/var/ossec/bin$ ./verify-agent-conf 
+
+       verify-agent-conf: Verifying [etc/shared/Windows/agent.conf]
+       verify-agent-conf: OK
+
+       verify-agent-conf: Verifying [etc/shared/default/agent.conf]
+       verify-agent-conf: OK
+
+       verify-agent-conf: Verifying [etc/shared/Linux/agent.conf]
+       verify-agent-conf: OK
+
+```
+
+<p float="center">
+  <img src="images/UbuntuServerSelect.png" width="500" />
+  <img src="images/Ventoy.png" width="450" />
+
+
+    └─ For OSquery:
+       
+    └─ Enter Hostname for Win VM in "Assign an agent name field"
+    └─ Copy command from "4) Run the following commands to download and install the agent" field
+       and enter command into a Powershell (administrative) shell
+    └─ Start agent by issuing command "NET START Wazuh"
+    └─ Confirm injestion of logs from within Wazuh server (gui)
+```
+
 
