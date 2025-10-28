@@ -46,7 +46,7 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
 
 <p float="center">
   <img src="images/UbuntuServerSelect.png" width="500" />
-  <img src="images/Ventoy.png" width="450" />
+  <img src="images/Ventoy.png" width="500" />
  
 ```
 1) Ensure Ubuntu 22.04 is updated
