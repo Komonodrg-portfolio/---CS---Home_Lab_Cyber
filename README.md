@@ -213,18 +213,29 @@ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.con
 
 ```
 
-<p float="center">
-  <img src="images/UbuntuServerSelect.png" width="500" />
-  <img src="images/Ventoy.png" width="450" />
+<p align="center">
+  <img src="images/Sysmon3.png" width="1000" /><br>
 
 
-    └─ For OSquery:
+    For OSquery:
        
-    └─ Enter Hostname for Win VM in "Assign an agent name field"
-    └─ Copy command from "4) Run the following commands to download and install the agent" field
-       and enter command into a Powershell (administrative) shell
-    └─ Start agent by issuing command "NET START Wazuh"
-    └─ Confirm injestion of logs from within Wazuh server (gui)
+    └─ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.conf (had to open via Notepad
+    - Run as admin) > enabled the wodle injestion of logs (which provides instant alerts for actions) 
+
+    <!-- Osquery integration -->
+    <wodle name="osquery">
+    <disabled>no</disabled>
+    <run_daemon>no</run_daemon>
+    <bin_path>C:\Program Files\osquery\osqueryd</bin_path>
+    <log_path>C:\Program Files\osquery\log\osqueryd.results.log</log_path>
+    <config_path>C:\Program Files\osquery\osquery.conf</config_path>
+    <add_labels>yes</add_labels>
+    </wodle>
+    
+    └─ Had to disable the daemon run function by setting it to "no", as was getting osquery error "Pidfile::Error::Busy"
+       indicating that two instances of osquery were trying to run (took some time to resolve... whew)
+    └─ Stop / Start osqueryd agent by issuing command "NET STOP osqueryd" then "NET START osqueryd"
+    └─ Finally... whew, Able to confirm injestion of logs from within Wazuh server successfully, wihout error (gui)
 ```
 
 
