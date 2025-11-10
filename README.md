@@ -37,7 +37,7 @@ It highlights skills in:
 
 ## 🛠️  Setup Instructions
 <details>
- <summary><h4><b>  A)  Wazuh Server (standalone) Deployment"</b></h4></summary>
+ <summary><h4><b>  A)  Wazuh Server (standalone) Deployment</b></h4></summary>
   <br> 
 This method involves installing Wazuh Server on a standalone PC/Laptop.  This deployment is best to use if you want a dedicated security appliance to monitor and protect your home network.<br>  
 <br>
@@ -123,10 +123,10 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
   <img src="images/WIn1.png" width="800" /><br>
 
 ```
-Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Powershell<br>
-   └─ Enable Module Logging, click "Show" and enter "*" wildcard to encompass all modules<br>
-   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)<br>
-   └─ Enable Script Block Logging DON'T enable invocation headers<br>
+Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Powershell
+   └─ Enable Module Logging, click "Show" and enter "*" wildcard to encompass all modules
+   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)
+   └─ Enable Script Block Logging DON'T enable invocation headers
 ```
 <h4> Enable Firewall (Defender) Logging </h4> 
 
@@ -164,7 +164,7 @@ sysmon64.exe -i sysmonconfig.xml
 <p align="left">
   <img src="images/Win8.png" width="950" /><br>
 
-5) Download & Install [OSquery](https://osquery.io/downloads/official/5.19.0) for windows, select latest stable version & run installation.  Confirm successful installation:
+5) Download & Install [OSquery](https://osquery.io/downloads/official/5.19.0) for windows from , select latest stable version & run installation from .exe or .msi file.  Confirm successful installation:
 
 <p align="left">
   <img src="images/Win6.png" width="950" /><br>
@@ -184,12 +184,12 @@ From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
 <p align="left">
   <img src="images/Wazuh.png" width="950" /><br>
 
-<h4> Send Sysmon & OSquery Logs to Wazuh Manager through Wazuh Agent </h4>
+<h4> Send Sysmon Logs to Wazuh Manager through Wazuh Agent </h4>
 
 ```
 From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.conf (had to open via Notepad
 - Run as admin) > add config lines to end of already configured <logfile> entries.  
-    └─ For Sysmon:
+    
        <localfile>
          <location>Microsoft-Windows-Sysmon/Operational</location>
          <log_format>eventchannel</log_format>
@@ -221,9 +221,19 @@ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.con
 <p align="center">
   <img src="images/Sysmon3.png" width="1000" /><br>
 
+<h4> Send Osquery Logs to Wazuh Manager through Wazuh Agent </h4>
 
-    For OSquery:
-       
+To confirm proper installation and operation of osquery, you can open the interactive prompt from `cmd` and use a test query.  In this case, we'll use one to list active network connections:
+```
+SELECT pid, local_address, local_port, remote_address, remote_port, state, protocol
+FROM process_open_sockets
+WHERE remote_address != '0.0.0.0';
+```
+<p align="center">
+  <img src="images/Osquery3.png" width="1000" /><br>
+
+
+```
     └─ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.conf (had to open via Notepad
     - Run as admin) > enabled the wodle injestion of logs (which provides instant alerts for actions) 
 
