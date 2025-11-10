@@ -49,11 +49,11 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
   <img src="images/Ventoy.png" width="450" />
  
 
-1\)&nbsp; Ensure Ubuntu 22.04 is updated:
+1) Ensure Ubuntu 22.04 is updated:
 ```
 sudo apt update && sudo apt upgrade -y
 ```
-2\)&nbsp;  Ensure firewall (ufw) is active and  proper ports are open, allowing for proper communication of server:
+2)  Ensure firewall (ufw) is active and  proper ports are open, allowing for proper communication of server:
 ```
 sudo ufw reset
 sudo sudo ufw default deny incoming
@@ -68,11 +68,11 @@ sudo ufw allow 22/tcp       #anti SSH lockout
 sudo ufw enable
 sudo ufw status verbose
 ```
-3\)&nbsp; Install dependencies:
+3) Install dependencies:
 ```
 sudo apt install curl apt-transport-https gnupg2 wget unzip -y
 ```
-4\)&nbsp; Install installation script and executable without pause:
+4) Install installation script and executable without pause:
 ```
 curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
 sudo bash ./wazuh-install.sh -a
