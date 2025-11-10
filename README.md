@@ -234,11 +234,7 @@ WHERE remote_address != '0.0.0.0';
 
 With confirmation, we'll proceed with the injesti0n of logs to Wazuh Manager (Server) via a few initial configurations.
 
-1) Edit osquery configuration file located at `C:\Program Files\osquery\osquery.conf` to reflect windows environment.  This example configuration:
-- Creates alot of telemetry quickly, as normal behavior of osquery is set to rather lengthy polling schedule for quick triage
-- Is JSON tested, as erroneous syntax can prevent proper operation
-
-2) First,  make a backup of original config file:
+1) First, make a backup of original config file:
 ```
 CMD:
 cd "C:\Program Files\osquery"
@@ -248,7 +244,11 @@ Powershell:
 cd "C:\Program Files\osquery"
 Copy-Item -Path "osquery.conf" -Destination "C:\Backup\osquery.conf.bak"
 ```
-3) Open original `osquery.conf` file, select all and paste in config below:
+2) Edit osquery configuration file located at `C:\Program Files\osquery\osquery.conf` to reflect windows environment.  This example configuration:
+- Creates alot of telemetry quickly, as normal behavior of osquery polling schedule is a bit long for immediate testing
+- Is JSON tested, as erroneous syntax can prevent proper operation
+
+3) Open original `osquery.conf` file > select all > paste in config below >  Save:
 ```
    {
   "options": {
@@ -293,19 +293,45 @@ Copy-Item -Path "osquery.conf" -Destination "C:\Backup\osquery.conf.bak"
 }
 
 ```
-4) Save File > Restart osquery server & Test if logs are being generated:
+4) Test if file is in proper JSON format, if it returns no error, it is good:
+```
+Powershell:
+Get-Content "C:\Program Files\osquery\osquery.conf" -Raw | ConvertFrom-Json | Out-Null; Write-Host "✅ Valid JSON"
+```
+
+5) Restart osquery service from Powershell via `Restart-Service -Name osqueryd -Force` & test if logs are being generated:
 ```
 Powershell:
 Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
 ```
 <p align="center">
-  <img src="images/Osquery4.png" width="800" /><br>
+  <img src="images/Osquery4.png" width="1000" /><br>
+ 
 
-5) 
+6) Edit Wazuh Agent config file via `C:\Program Files (x86)\ossec-agent\ossec.conf` file.  Make sure:
+- ... to add <localfile> block after other localfile entries
+- make sure `wodle` configuration block is disabled
 ```
-Powershell:
-Get-Content "C:\Program Files\osquery\osquery.conf" -Raw | ConvertFrom-Json | Out-Null; Write-Host "✅ Valid JSON"
+<localfile>
+  <log_format>json</log_format>
+  <location>C:\Program Files\osquery\log\osqueryd.results.log</location>
+</localfile>
 
-If it doesn't return and error, file is good.
+...
+
+<!-- Osquery integration -->
+  <wodle name="osquery">
+    <disabled>yes</disabled>
+    <run_daemon>no</run_daemon>
+    <bin_path>C:\Program Files\osquery\osqueryd</bin_path>
+    <log_path>C:\Program Files\osquery\log\osqueryd.results.log</log_path>
+    <config_path>C:\Program Files\osquery\osquery.conf</config_path>
+    <add_labels>yes</add_labels>
+  </wodle>
 ```
+6) Login to Wazuh Manager and confirm that logs are being generated:
+
+<p align="center">
+  <img src="images/Osquery5.png" width="1000" /><br>
+
 
