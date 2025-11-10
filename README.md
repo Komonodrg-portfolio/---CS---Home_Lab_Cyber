@@ -186,10 +186,10 @@ From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
 
 <h4> Send Sysmon Logs to Wazuh Manager through Wazuh Agent </h4>
 
-```
+
 From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.conf (had to open via Notepad
 - Run as admin) > add config lines to end of already configured <logfile> entries.  
-    
+```    
        <localfile>
          <location>Microsoft-Windows-Sysmon/Operational</location>
          <log_format>eventchannel</log_format>
