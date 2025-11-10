@@ -6,7 +6,7 @@
 # Wazuh SIEM & XDR Deployment  
 
 ## 📌 Goals
-This project demonstrates the deployment of a standalone **Wazuh SIEM & XRD instance**  in order to holistically triage of systems (windows, linux) and network in order to strengthen my skills while seeking to become a Cybersecurity professional. In conjuction with aligning with principles of my [mission](https://github.com/Komonodrg-portfolio/Mission/), my aim is to deploy on hardware already possessed.  
+This project demonstrates the deployment of a standalone **Wazuh SIEM & XRD instance**  in order to holistically triage of systems (windows, linux) and network traffic in order to strengthen my skills while seeking to become a Cybersecurity professional. In conjuction with aligning with principles of my [mission](https://github.com/Komonodrg-portfolio/Mission/), my aim is to deploy on hardware already possessed.  
 
 It highlights skills in:
 - Barebone deployment, for dedicated security device with firewall lockdown implementation
@@ -46,34 +46,39 @@ Create a <a href="https://chatgpt.com/s/t_68e1cb99a0088191bb1937e92241f81a" targ
 
 <p float="center">
   <img src="images/UbuntuServerSelect.png" width="500" />
-  <img src="images/Ventoy.png" width="500" />
+  <img src="images/Ventoy.png" width="450" />
  
+
+1\)&nbsp; Ensure Ubuntu 22.04 is updated:
 ```
-1) Ensure Ubuntu 22.04 is updated
-   └─ sudo apt update && sudo apt upgrade -y
-
-2) Ensure firewall (ufw) is active and  proper ports are open, allowing for proper communication of server
-   └─ sudo ufw reset
-   └─ sudo sudo ufw default deny incoming
-      sudo ufw default allow outgoing
-   └─ sudo ufw allow 1514/tcp
-      sudo ufw allow 1514/udp
-      sudo ufw allow 1515/tcp
-      sudo ufw allow 443/tcp
-      sudo ufw allow 9200/tcp
-      sudo ufw allow 55000/tcp
-      sudo ufw allow 22/tcp       #anti SSH lockout
-   └─ sudo ufw enable
-   └─ sudo ufw status verbose
-
-3) Install dependencies:
-   └─ sudo apt install curl apt-transport-https gnupg2 wget unzip -y
-
-4) Install installation script and executable without pause:
-   └─ curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
-   └─ sudo bash ./wazuh-install.sh -a
-
+sudo apt update && sudo apt upgrade -y
 ```
+2\)&nbsp;  Ensure firewall (ufw) is active and  proper ports are open, allowing for proper communication of server:
+```
+sudo ufw reset
+sudo sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 1514/tcp
+sudo ufw allow 1514/udp
+sudo ufw allow 1515/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 9200/tcp
+sudo ufw allow 55000/tcp
+sudo ufw allow 22/tcp       #anti SSH lockout
+sudo ufw enable
+sudo ufw status verbose
+```
+3\)&nbsp; Install dependencies:
+```
+sudo apt install curl apt-transport-https gnupg2 wget unzip -y
+```
+4\)&nbsp; Install installation script and executable without pause:
+```
+curl -sO https://packages.wazuh.com/4.14/wazuh-install.sh
+sudo bash ./wazuh-install.sh -a
+```
+
+
  
 You'll be granted with login instructions and credentials for Wazuh server web gui to access from the browser of another computer on the network:<br>
 <br>
@@ -117,12 +122,12 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
  <p align="left">
   <img src="images/WIn1.png" width="800" /><br>
 
-```
-Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Powershell
-   └─ Enable Module Logging, click "Show" and enter "*" wildcard to encompass all modules
-   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)
-   └─ Enable Script Block Logging DON'T enable invocation headers
-```
+
+1)&nbsp; Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Powershell<br>
+   └─ Enable Module Logging, click "Show" and enter "*" wildcard to encompass all modules<br>
+   └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)<br>
+   └─ Enable Script Block Logging DON'T enable invocation headers<br>
+
 <h4> Enable Firewall (Defender) Logging </h4> 
 
 <p align="left">
