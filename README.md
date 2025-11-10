@@ -219,11 +219,11 @@ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.con
 ```
 
 <p align="center">
-  <img src="images/Sysmon3.png" width="1000" /><br>
+  <img src="images/Sysmon3.png" width="850" /><br>
 
 <h4> Send Osquery Logs to Wazuh Manager through Wazuh Agent </h4>
 
-To confirm proper installation and operation of osquery, you can open the interactive prompt from `cmd` and use a test query.  In this case, we'll use one to list active network connections:
+To confirm proper installation and operation of osquery, you can open the interactive prompt from `cmd` and use a test query via `C:\Program Files\osquery\osqueryi.exe`.  In this case, we'll use one to list active network connections:
 ```
 SELECT pid, local_address, local_port, remote_address, remote_port, state, protocol
 FROM process_open_sockets
@@ -232,25 +232,80 @@ WHERE remote_address != '0.0.0.0';
 <p align="center">
   <img src="images/Osquery3.png" width="1000" /><br>
 
+With confirmation, we'll proceed with the injesti0n of logs to Wazuh Manager (Server) via a few initial configurations.
+
+1) Edit osquery configuration file located at `C:\Program Files\osquery\osquery.conf` to reflect windows environment.  This example configuration:
+- Creates alot of telemetry quickly, as normal behavior of osquery is set to rather lengthy polling schedule for quick triage
+- Is JSON tested, as erroneous syntax can prevent proper operation
+
+2) First,  make a backup of original config file:
+```
+CMD:
+cd "C:\Program Files\osquery"
+copy osquery.conf osquery.conf.bak
+
+Powershell:
+cd "C:\Program Files\osquery"
+Copy-Item -Path "osquery.conf" -Destination "C:\Backup\osquery.conf.bak"
+```
+3) Open original `osquery.conf` file, select all and paste in config below:
+```
+   {
+  "options": {
+    "host_identifier": "hostname",
+    "schedule_splay_percent": 10,
+    "database_path": "C:\\Program Files\\osquery\\osquery.db",
+    "logger_plugin": "filesystem",
+    "logger_path": "C:\\Program Files\\osquery\\log",
+    "log_result_events": true,
+    "verbose": false
+  },
+  "schedule": {
+    "process_additions": {
+      "query": "SELECT pid, name, cmdline, cwd FROM processes;",
+      "interval": 10,
+      "description": "Log new process creations and terminations every 10 seconds."
+    },
+    "network_connections_changes": {
+      "query": "SELECT * FROM process_open_sockets WHERE family = 2 AND state = 'ESTABLISHED';",
+      "interval": 20,
+      "description": "Log new established TCP connections every 20 seconds."
+    },
+    "user_logons_differential": {
+      "query": "SELECT uid, username, type, terminal FROM logged_in_users;",
+      "interval": 30,
+      "description": "Log user logon/logoff changes every 30 seconds."
+    }
+  },
+  "packs": {
+    "windows-hardening": "C:\\Program Files\\osquery\\packs\\windows-hardening.conf",
+    "windows-attacks": "C:\\Program Files\\osquery\\packs\\windows-attacks.conf"
+  },
+  "feature_vectors": {
+    "character_frequencies": [
+      0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.00045, 0.01798, 0.03111, 0.00063, 0.01336, 0.0133, 0.00128,
+      0.0027, 0.00655, 0.01932, 0.01917, 0.00432, 0.0045, 0.00316, 0.00245,
+      0.00133, 0.001029, 0.00114, 0.000869, 0.00067, 0.000759, 0.00061,
+      0.00483, 0.0023, 0.00185, 0.01342, 0.00196
+    ]
+  }
+}
 
 ```
-    └─ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.conf (had to open via Notepad
-    - Run as admin) > enabled the wodle injestion of logs (which provides instant alerts for actions) 
-
-    <!-- Osquery integration -->
-    <wodle name="osquery">
-    <disabled>no</disabled>
-    <run_daemon>no</run_daemon>
-    <bin_path>C:\Program Files\osquery\osqueryd</bin_path>
-    <log_path>C:\Program Files\osquery\log\osqueryd.results.log</log_path>
-    <config_path>C:\Program Files\osquery\osquery.conf</config_path>
-    <add_labels>yes</add_labels>
-    </wodle>
-    
-    └─ Had to disable the daemon run function by setting it to "no", as was getting osquery error "Pidfile::Error::Busy"
-       indicating that two instances of osquery were trying to run (took some time to resolve... whew)
-    └─ Stop / Start osqueryd agent by issuing command "NET STOP osqueryd" then "NET START osqueryd"
-    └─ Finally... whew, Able to confirm injestion of logs from within Wazuh server successfully, wihout error (gui)
+4) Save File > Restart osquery server & Test if logs are being generated:
 ```
+Powershell:
+Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
+```
+<p align="center">
+  <img src="images/Osquery4.png" width="800" /><br>
 
+5) 
+```
+Powershell:
+Get-Content "C:\Program Files\osquery\osquery.conf" -Raw | ConvertFrom-Json | Out-Null; Write-Host "✅ Valid JSON"
+
+If it doesn't return and error, file is good.
+```
 
