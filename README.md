@@ -219,7 +219,7 @@ From within Windows VM, navigate to C:\Program Files (x86)\ossec-agent\ossec.con
 ```
 
 <p align="center">
-  <img src="images/Sysmon3.png" width="850" /><br>
+  <img src="images/Sysmon3.png" width="1000" /><br>
 
 <h4> Send Osquery Logs to Wazuh Manager through Wazuh Agent </h4>
 
