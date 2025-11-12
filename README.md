@@ -245,7 +245,7 @@ copy osquery.conf osquery.conf.bak
 
 3) Open original file `osquery.conf` via `Notepad (Administrative)`  > select all > paste in config below >  Save:
 ```
-   {
+ {
   "options": {
     "host_identifier": "hostname",
     "schedule_splay_percent": 10,
@@ -267,7 +267,7 @@ copy osquery.conf osquery.conf.bak
       "description": "Log new established TCP connections every 20 seconds."
     },
     "user_logons_differential": {
-      "query": "SELECT uid, username, type, terminal FROM logged_in_users;",
+      "query": "SELECT username, type FROM logged_in_users;",
       "interval": 30,
       "description": "Log user logon/logoff changes every 30 seconds."
     }
