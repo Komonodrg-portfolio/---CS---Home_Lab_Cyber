@@ -117,6 +117,29 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
 <details>
  <summary><h4><b>  C)  Windows 10 (Victim) VM Setup</b></h4></summary>
   <br> 
+<h4> Create Administrative Shortcuts </h4> 
+
+Many of the configuration tasks required need administrative elevated applications.  For ease of startup, found it best to create administrative shortcuts on my desktop to:
+- CMD
+- Powershell
+- Notepad
+```
+Right click on Desktop > New > Shortcut
+  
+To create shortcuts for required applications, repeat process for each application, for each enter:
+  └─ CMD: C:\Windows\System32\cmd.exe
+  └─ Powershell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+  └─ Notepad: C:\Windows\System32\notepad.exe
+
+Once each shortcut is created, right click on each > Properties > Advanced >
+  place ✅ on "Run as administrator" > OK > Apply > OK
+
+Now applications can be launched easily with Admin privileges
+```
+
+ <p align="left">
+  <img src="images/Admin.png" width="800" /><br>
+ 
 <h4> Enable Powershell Logging </h4>  
 
  <p align="left">
@@ -246,7 +269,7 @@ copy osquery.conf osquery.conf.bak
 
 3) Open original file `osquery.conf` via `Notepad (Administrative)`  > select all > paste in config below >  Save:
 ```
- {
+{
   "options": {
     "host_identifier": "hostname",
     "schedule_splay_percent": 10,
@@ -268,7 +291,7 @@ copy osquery.conf osquery.conf.bak
       "description": "Log new established TCP connections every 20 seconds."
     },
     "user_logons_differential": {
-      "query": "SELECT username, type FROM logged_in_users;",
+      "query": "SELECT user, type FROM logged_in_users;",
       "interval": 30,
       "description": "Log user logon/logoff changes every 30 seconds."
     }
@@ -287,7 +310,6 @@ copy osquery.conf osquery.conf.bak
     ]
   }
 }
-
 ```
 4) Test if file is in proper JSON format via `Powershell (Admin)`, if it returns no error, it is good:
 ```
