@@ -234,15 +234,10 @@ WHERE remote_address != '0.0.0.0';
 
 With confirmation, we'll proceed with the injesti0n of logs to Wazuh Manager (Server) via a few initial configurations.
 
-1) First, make a backup of original config file:
+1) First, make a backup of original config file via `CMD`:
 ```
-CMD:
 cd "C:\Program Files\osquery"
 copy osquery.conf osquery.conf.bak
-
-Powershell:
-cd "C:\Program Files\osquery"
-Copy-Item -Path "osquery.conf" -Destination "C:\Backup\osquery.conf.bak"
 ```
 2) Edit osquery configuration file located at `C:\Program Files\osquery\osquery.conf` to reflect windows environment.  This example configuration:
 - Creates alot of telemetry quickly, as normal behavior of osquery polling schedule is a bit long for immediate testing
