@@ -243,7 +243,7 @@ copy osquery.conf osquery.conf.bak
 - Creates alot of telemetry quickly, as normal behavior of osquery polling schedule is a bit long for immediate testing
 - Is JSON tested, as erroneous syntax can prevent proper operation
 
-3) Open original `osquery.conf` file > select all > paste in config below >  Save:
+3) Open original file `osquery.conf` via `Notepad (Administrative)`  > select all > paste in config below >  Save:
 ```
    {
   "options": {
