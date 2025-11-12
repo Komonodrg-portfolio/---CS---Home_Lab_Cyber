@@ -288,15 +288,14 @@ copy osquery.conf osquery.conf.bak
 }
 
 ```
-4) Test if file is in proper JSON format, if it returns no error, it is good:
+4) Test if file is in proper JSON format via `Powershell (Admin)`, if it returns no error, it is good:
 ```
-Powershell:
 Get-Content "C:\Program Files\osquery\osquery.conf" -Raw | ConvertFrom-Json | Out-Null; Write-Host "✅ Valid JSON"
 ```
 
-5) Restart osquery service from Powershell via `Restart-Service -Name osqueryd -Force` & test if logs are being generated:
+5) Restart osquery service from `Powershell` via `` & test if logs are being generated:
 ```
-Powershell:
+Restart-Service -Name osqueryd -Force
 Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
 ```
 <p align="center">
