@@ -122,8 +122,9 @@ This is intial setup of Windows Server 2022 from within VMWare. <br>
  <p align="left">
   <img src="images/WIn1.png" width="800" /><br>
 
+
+Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Components > Windows Powershell
 ```
-Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows Powershell
    └─ Enable Module Logging, click "Show" and enter "*" wildcard to encompass all modules
    └─ Enable Powershell Transcription, placing a check for include invocation headers (timestamps)
    └─ Enable Script Block Logging DON'T enable invocation headers
