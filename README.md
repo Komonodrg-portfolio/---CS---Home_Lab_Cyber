@@ -135,7 +135,7 @@ Startup gpedit.msc > Computer Configuration > Administrative Templates > Windows
   <img src="images/Win2.png" width="800" /><br>
 
 ```
-1) Startup gpedit.msc > Computer Configuration > Windows Settings > Windows Firewall w/ Advanced Security
+1) Startup gpedit.msc > Computer Configuration > Windows Settings > Security Settings > Windows Firewall w/ Advanced Security
    > Windows Defender Firewall Properties
 2) Turn on Firewall, blocking inbound connections, allowing outbound connections
 3) Do the same for Private & Public Profiles
