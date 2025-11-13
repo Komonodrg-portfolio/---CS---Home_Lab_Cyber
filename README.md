@@ -376,4 +376,22 @@ Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
   <img src="images/OPNsense3.png" width="500"/>
   <img src="images/OPNsense2.png" width="475"/>
 
+2) Confirm it's listening via:
+```
+sudo tcpdump -n udp port 514
+```
+<h4> Setup and Initiate Different Syslog Streams to Forward </h4>
+<br>
+
+Being security focused, best to setup these different syslog streams for SIEM analysis:
+| Logs      | Purpose                              |
+|------------|--------------------------------------|
+| Firewall | Core security logs: connection attempts, blocked traffic, NAT translations. Essential for intrusion detection and baseline network activity.         |
+| IDS/IPS (Suricata) | Detects attacks, exploits, malware traffic. Forwarding these allows correlation with firewall logs in Wazuh.        |
+| VPN    | Monitor authentication attempts, connection establishment, and possible VPN misuse.          |
+| Authentication / System Logs  | Tracks logins, sudo attempts, administrative activity. Helps detect suspicious account activity.                      |
+| DHCP (Optional)  | Useful to correlate devices and IP assignments for network monitoring.         |  
+| DHCP / Captive Portal / RADIUS (Optional)  | Monitor access control points for unusual authentication patterns.         | 
+| Suricata Stats / Performance (Optional)  | Mostly for performance and anomaly detection rather than security alerts.         | 
+
   </details>
