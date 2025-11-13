@@ -360,7 +360,7 @@ Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
 <details>
  <summary><h4><b>  D)  OPNsense Router/Firewall Setup</b></h4></summary>
   <br> 
-<h4> Intial Wazuh Server Configuration </h4>
+<h4> Initial Wazuh Server Configuration </h4>
 
 1) Need to edit the config of `/var/ossec/etc/ossec.conf` on Wazuh Manger to intiate the external syslog listener to <ossec_config> section by adding:
 
@@ -382,8 +382,9 @@ sudo tcpdump -n udp port 514
 ```
 <h4> Setup and Initiate Different Syslog Streams to Forward </h4>
 
-1)  Being security focused, best to setup these different syslog streams for SIEM analysis:
-   
+1)  Being security focused, best to setup these different syslog streams for SIEM analysis:<br>
+
+ 
 | Logs      | Purpose                              |
 |------------|--------------------------------------|
 | Firewall | Core security logs: connection attempts, blocked traffic, NAT translations. Essential for intrusion detection and baseline network activity.         |
@@ -395,20 +396,21 @@ sudo tcpdump -n udp port 514
 | DHCP / Captive Portal / RADIUS (Optional)  | Monitor access control points for unusual authentication patterns.         | 
 | Suricata Stats / Performance (Optional)  | Mostly for performance and anomaly detection rather than security alerts.         | 
 
+
 2)  From OPNsense GUI, navigate to > System > Settings > Logging > Remote Tab > click `+` to add syslog stream, sending each via a different `local#` > once all the streams created `Enabled` > Apply.
 
 <p float="center">
   <img src="images/OPNsense5.png" width="500"/>
-  <img src="images/OPNsense4.png" width="500"/>
+  <img src="images/OPNsense4.png" width="500"/><br>
 
-3) You can also bundle streams, but wanted an opportunity to configure the decoders on Wazuh Manager later for easier labeling &  triage of logs.<br>
+3) You can also bundle streams, but wanted an opportunity to configure the decoders on Wazuh Manager (later) for easier labeling &  triage of logs.<br>
 
 4) Confirm sending is ACTIVE via navigating to System > Log Files > General > Log:
 
 <p float="center">
   <img src="images/OPNsense6.png" width="1000"/>
  
-5) A quick check of Wazuh GUI confirms logs are being received:
+5) A quick check of Wazuh GUI confirms logs are being received from my OPNsense Firewall/Router:
  
 <p float="center">
   <img src="images/OPNsense7.png" width="1000"/>
