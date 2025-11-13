@@ -345,6 +345,8 @@ Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
     <config_path>C:\Program Files\osquery\osquery.conf</config_path>
     <add_labels>yes</add_labels>
   </wodle>
+
+(may need to toggle wodle status from yes to no to get logs to injest properly)
 ```
 6) Login to Wazuh Manager and confirm that logs are being generated:
 
