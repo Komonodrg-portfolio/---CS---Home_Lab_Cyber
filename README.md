@@ -356,4 +356,24 @@ Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
 <p align="center">
   <img src="images/Osquery5.png" width="1000" /><br>
 
+</details>
+<details>
+ <summary><h4><b>  D)  OPNsense Router/Firewall Setup</b></h4></summary>
+  <br> 
+<h4> Intial Wazuh Server Configuration </h4>
 
+1) Need to edit the config of `/var/ossec/etc/ossec.conf` on Wazuh Manger to intiate the external syslog listener to <ossec_config> section by adding:
+
+```
+ <remote>
+    <connection>syslog</connection>
+    <port>514</port>
+    <protocol>udp</protocol>
+  </remote>
+```
+
+<p float="center">
+  <img src="images/OPNsense3.png" width="500"/>
+  <img src="images/OPNsense2.png" width="475"/>
+
+  </details>
