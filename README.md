@@ -202,7 +202,7 @@ From within Windows VM, navigate to Wazuh server > Select "Deploy New Agent"
     └─ Enter Hostname for Win VM in "Assign an agent name field"
     └─ Copy command from "4) Run the following commands to download and install the agent" field
        and enter command into a Powershell (administrative) shell
-    └─ Start agent by issuing command "NET START Wazuh"
+    └─ Will start agent by issuing command "NET START Wazuh" AFTER CONFIGURING configuration files
     └─ Confirm injestion of logs from within Wazuh server (gui)
 ```
 <p align="left">
@@ -310,7 +310,10 @@ copy osquery.conf osquery.conf.bak
     ]
   }
 }
+
 ```
+Can configure custom queries to key in on after verifying proper injestion of files.<br>
+<br>
 4) Test if file is in proper JSON format via `Powershell (Admin)`, if it returns no error, it is good:
 ```
 Get-Content "C:\Program Files\osquery\osquery.conf" -Raw | ConvertFrom-Json | Out-Null; Write-Host "✅ Valid JSON"
