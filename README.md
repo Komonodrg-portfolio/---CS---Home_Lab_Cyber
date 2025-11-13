@@ -381,17 +381,35 @@ Get-Content "C:\Program Files\osquery\log\osqueryd.results.log" -Tail 10
 sudo tcpdump -n udp port 514
 ```
 <h4> Setup and Initiate Different Syslog Streams to Forward </h4>
-<br>
 
-Being security focused, best to setup these different syslog streams for SIEM analysis:
+1)  Being security focused, best to setup these different syslog streams for SIEM analysis:
+   
 | Logs      | Purpose                              |
 |------------|--------------------------------------|
 | Firewall | Core security logs: connection attempts, blocked traffic, NAT translations. Essential for intrusion detection and baseline network activity.         |
 | IDS/IPS (Suricata) | Detects attacks, exploits, malware traffic. Forwarding these allows correlation with firewall logs in Wazuh.        |
+| DNS | Name resolution and IP Assignment in OPNSense. Optional features: DNS filtering, static leases, DHCP leases with hostnames       |
 | VPN    | Monitor authentication attempts, connection establishment, and possible VPN misuse.          |
 | Authentication / System Logs  | Tracks logins, sudo attempts, administrative activity. Helps detect suspicious account activity.                      |
 | DHCP (Optional)  | Useful to correlate devices and IP assignments for network monitoring.         |  
 | DHCP / Captive Portal / RADIUS (Optional)  | Monitor access control points for unusual authentication patterns.         | 
 | Suricata Stats / Performance (Optional)  | Mostly for performance and anomaly detection rather than security alerts.         | 
 
+2)  From OPNsense GUI, navigate to > System > Settings > Logging > Remote Tab > click `+` to add syslog stream, sending each via a different `local#` > once all the streams created `Enabled` > Apply.
+
+<p float="center">
+  <img src="images/OPNsense5.png" width="500"/>
+  <img src="images/OPNsense4.png" width="500"/>
+
+3) You can also bundle streams, but wanted an opportunity to configure the decoders on Wazuh Manager later for easier labeling &  triage of logs.<br>
+
+4) Confirm sending is ACTIVE via navigating to System > Log Files > General > Log:
+
+<p float="center">
+  <img src="images/OPNsense6.png" width="1000"/>
+ 
+5) A quick check of Wazuh GUI confirms logs are being received:
+ 
+<p float="center">
+  <img src="images/OPNsense7.png" width="1000"/>
   </details>
