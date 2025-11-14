@@ -421,55 +421,66 @@ sudo tcpdump -n udp port 514
 ```
 sudo nano /var/ossec/etc/decoders.d/opnsense_decoders.xml
 ```
-2) Add custom decoder blocks into file & Save:
+2) Add a custom decoder blocks into file & Save:
 ```
-<decoder name="opnsense-firewall">
-  <program_name>firewall</program_name>
-  <prematch>.*</prematch>
-  <regex>.*</regex>
-  <order>srcip, dstip, srcport, dstport, protocol, action, interface, direction, rule</order>
-  <tag>facility:local0</tag>
-</decoder>
+<decoders>
 
-<decoder name="opnsense-suricata">
-  <program_name>suricata</program_name>
-  <prematch>.*</prematch>
-  <regex>.*</regex>
-  <order>event_type, signature, severity, class, srcip, srcport, dstip, dstport, protocol</order>
-  <tag>facility:local1</tag>
-</decoder>
+  <!-- Firewall logs: only blocked or matched events (WAN-focused) -->
+  <decoder name="opnsense-firewall">
+    <program_name>filterlog</program_name>
+    <prematch>.*(block|match).*|pass.*WAN.*</prematch> <!-- Only block/match or WAN passes -->
+    <regex>.*filterlog\s+(?P<rule>\d+),,,.*?,(?P<interface>\w+),(?:match|block|pass),(?P<action>\w+),(?P<direction>\w+),\d+,.+?,(?P<protocol>\w+),\d+,(?P<srcip>(?:\d{1,3}\.){3}\d{1,3}|[a-fA-F0-9:]+),(?    P<dstip>(?:\d{1,3}\.){3}\d{1,3}|[a-fA-F0-9:]+),(?P<srcport>\d+),(?P<dstport>\d+),.*</regex>
+    <order>srcip, dstip, srcport, dstport, protocol, action, interface, direction, rule</order>
+    <tag>facility:local0</tag>
+  </decoder>
 
-<decoder name="opnsense-VPN_wireguard">
-  <program_name>wireguard</program_name>
-  <prematch>.*</prematch>
-  <regex>.*</regex>
-  <order>peer, action, endpoint, rx, tx</order>
-  <tag>facility:local2</tag>
-</decoder>
+  <!-- Suricata logs: only alert / warning messages -->
+  <decoder name="opnsense-suricata">
+    <program_name>suricata</program_name>
+    <prematch>.*(Alert|Warning|Notice).*</prematch> <!-- Only notable events -->
+    <regex>\[.*?\]\s+<(?P<severity>\w+)> -- (?P<message>.*)</regex>
+    <order>severity, message</order>
+    <tag>facility:local1</tag>
+  </decoder>
 
-<decoder name="opnsense-DNS">
-  <program_name>dnsmasq</program_name>
-  <prematch>.*</prematch>
-  <regex>.*</regex>
-  <order>query_type, dns_query, srcip, dns_response, mac, hostname, lease_ip</order>
-  <tag>facility:local3</tag>
-</decoder>
+  <!-- WireGuard VPN logs: authentication events -->
+  <decoder name="opnsense-VPN_wireguard">
+    <program_name>wireguard</program_name>
+    <prematch>.*</prematch>
+    <regex>.*peer=(?P<peer>\S+)\s+action=(?P<action>\w+)\s+endpoint=(?P<endpoint>[\d.:]+)\s+rx=(?P<rx>\d+)\s+tx=(?P<tx>\d+)</regex>
+    <order>peer, action, endpoint, rx, tx</order>
+    <tag>facility:local2</tag>
+  </decoder>
 
-<decoder name="opnsense-VPN_openvpn">
-  <program_name>openvpn</program_name>
-  <prematch>.*</prematch>
-  <regex>.*</regex>
-  <order>username, srcip, client_ip, action, protocol, tls_state</order>
-  <tag>facility:local4</tag>
-</decoder>
+  <!-- DNS logs: optional, capture only queries that fail or suspicious patterns -->
+  <decoder name="opnsense-DNS">
+    <program_name>dnsmasq</program_name>
+    <prematch>.*(NXDOMAIN|SERVFAIL|query).*|.*</prematch> <!-- Focus on failures & queries -->
+    <regex>.*query_type=(?P<query_type>\S+)\s+dns_query=(?P<dns_query>\S+)\s+srcip=(?P<srcip>(?:\d{1,3}\.){3}\d{1,3})\s+dns_response=(?P<dns_response>\S+).*</regex>
+    <order>query_type, dns_query, srcip, dns_response</order>
+    <tag>facility:local3</tag>
+  </decoder>
 
-<decoder name="opnsense-Audit">
-  <program_name>audit</program_name>
-  <prematch>.*</prematch>
-  <regex>.*</regex>
-  <order>user, action, srcip, result, method, pid, tty, result</order>
-  <tag>facility:local5</tag>
-</decoder>
+  <!-- OpenVPN logs: authentication events -->
+  <decoder name="opnsense-VPN_openvpn">
+    <program_name>openvpn</program_name>
+    <prematch>.*</prematch>
+    <regex>.*username=(?P<username>\S+)\s+srcip=(?P<srcip>(?:\d{1,3}\.){3}\d{1,3})\s+client_ip=(?P<client_ip>(?:\d{1,3}\.){3}\d{1,3})\s+action=(?P<action>\w+)\s+protocol=(?P<protocol>\S+)\s+tls_state=(?P<tls_state>\S+)</regex>
+    <order>username, srcip, client_ip, action, protocol, tls_state</order>
+    <tag>facility:local4</tag>
+  </decoder>
+
+  <!-- Audit logs: critical system events only -->
+  <decoder name="opnsense-Audit">
+    <program_name>audit</program_name>
+    <prematch>.*</prematch>
+    <regex>.*user=(?P<user>\S+)\s+action=(?P<action>\w+)\s+srcip=(?P<srcip>(?:\d{1,3}\.){3}\d{1,3})\s+result=(?P<result>\w+).*</regex>
+    <order>user, action, srcip, result</order>
+    <tag>facility:local5</tag>
+  </decoder>
+
+</decoders>
+
 ```
 
 </details>
