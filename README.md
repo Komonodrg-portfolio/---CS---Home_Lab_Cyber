@@ -417,8 +417,9 @@ sudo tcpdump -n udp port 514
 
  <h4> Create Custom Identification of Syslog Stream via Editing Decorder File(s)</h4>
 
-1) Create new decoder file on Wazuh Server:
+1) Create new decoder file on Wazuh Server and edit it:
 ```
+sudo touch /var/ossec/etc/decoders.d/opnsense_decoders.xml
 sudo nano /var/ossec/etc/decoders.d/opnsense_decoders.xml
 ```
 2) Add a custom decoder blocks into file & Save:
@@ -480,7 +481,65 @@ sudo nano /var/ossec/etc/decoders.d/opnsense_decoders.xml
   </decoder>
 
 </decoders>
-
 ```
+3) Create custom rules on Wazuh Server to utilize decoder configuration:
+```
+sudo touch /var/ossec/etc/rules/opnsense_lab_rules.xml
+sudo nano  /var/ossec/etc/rules/opnsense_lab_rules.xml
+```
+4) Add to file:
+```
+<group name="opnsense,">
 
+  <!-- Firewall block events -->
+  <rule id="100001" level="10">
+    <if_sid>0</if_sid>
+    <decoded_as>opnsense-firewall</decoded_as>
+    <field name="action">block</field>
+    <description>OPNsense Firewall Blocked Traffic Detected</description>
+    <group>firewall,opnsense,</group>
+  </rule>
+
+  <!-- VPN WireGuard auth failures -->
+  <rule id="100002" level="8">
+    <if_sid>0</if_sid>
+    <decoded_as>opnsense-VPN_wireguard</decoded_as>
+    <field name="action">fail</field>
+    <description>WireGuard VPN Authentication Failure</description>
+    <group>vpn,opnsense,</group>
+  </rule>
+
+  <!-- OpenVPN auth failures -->
+  <rule id="100003" level="8">
+    <if_sid>0</if_sid>
+    <decoded_as>opnsense-VPN_openvpn</decoded_as>
+    <field name="action">fail</field>
+    <description>OpenVPN Authentication Failure</description>
+    <group>vpn,opnsense,</group>
+  </rule>
+
+  <!-- Suricata alert / warning events -->
+  <rule id="100004" level="12">
+    <if_sid>0</if_sid>
+    <decoded_as>opnsense-suricata</decoded_as>
+    <field name="severity">Alert|Warning</field>
+    <description>Suricata Alert / Warning Detected</description>
+    <group>ids,opnsense,</group>
+  </rule>
+
+  <!-- DNS anomalies (NXDOMAIN, SERVFAIL) -->
+  <rule id="100005" level="6">
+    <if_sid>0</if_sid>
+    <decoded_as>opnsense-DNS</decoded_as>
+    <field name="dns_response">NXDOMAIN|SERVFAIL</field>
+    <description>DNS Query Failure Detected</description>
+    <group>dns,opnsense,</group>
+  </rule>
+
+</group>
+```
+5) Restart Wazuh Manager:
+```
+sudo systemctl restart wazuh-manager
+```
 </details>
