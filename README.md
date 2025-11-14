@@ -414,4 +414,62 @@ sudo tcpdump -n udp port 514
  
 <p float="center">
   <img src="images/OPNsense7.png" width="1000"/>
-  </details>
+
+ <h4> Create Custom Identification of Syslog Stream via Editing Decorder File(s)</h4>
+
+1) Create new decoder file on Wazuh Server:
+```
+sudo nano /var/ossec/etc/decoders.d/opnsense_decoders.xml
+```
+2) Add custom decoder blocks into file & Save:
+```
+<decoder name="opnsense-firewall">
+  <program_name>firewall</program_name>
+  <prematch>.*</prematch>
+  <regex>.*</regex>
+  <order>srcip, dstip, srcport, dstport, protocol, action, interface, direction, rule</order>
+  <tag>facility:local0</tag>
+</decoder>
+
+<decoder name="opnsense-suricata">
+  <program_name>suricata</program_name>
+  <prematch>.*</prematch>
+  <regex>.*</regex>
+  <order>event_type, signature, severity, class, srcip, srcport, dstip, dstport, protocol</order>
+  <tag>facility:local1</tag>
+</decoder>
+
+<decoder name="opnsense-VPN_wireguard">
+  <program_name>wireguard</program_name>
+  <prematch>.*</prematch>
+  <regex>.*</regex>
+  <order>peer, action, endpoint, rx, tx</order>
+  <tag>facility:local2</tag>
+</decoder>
+
+<decoder name="opnsense-DNS">
+  <program_name>dnsmasq</program_name>
+  <prematch>.*</prematch>
+  <regex>.*</regex>
+  <order>query_type, dns_query, srcip, dns_response, mac, hostname, lease_ip</order>
+  <tag>facility:local3</tag>
+</decoder>
+
+<decoder name="opnsense-VPN_openvpn">
+  <program_name>openvpn</program_name>
+  <prematch>.*</prematch>
+  <regex>.*</regex>
+  <order>username, srcip, client_ip, action, protocol, tls_state</order>
+  <tag>facility:local4</tag>
+</decoder>
+
+<decoder name="opnsense-Audit">
+  <program_name>audit</program_name>
+  <prematch>.*</prematch>
+  <regex>.*</regex>
+  <order>user, action, srcip, result, method, pid, tty, result</order>
+  <tag>facility:local5</tag>
+</decoder>
+```
+
+</details>
