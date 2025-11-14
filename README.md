@@ -419,8 +419,10 @@ sudo tcpdump -n udp port 514
 
 1) Create new decoder file on Wazuh Server and edit it:
 ```
-sudo touch /var/ossec/etc/decoders.d/opnsense_decoders.xml
-sudo nano /var/ossec/etc/decoders.d/opnsense_decoders.xml
+cd /var/ossec/etc/decoders
+ls
+touch opnsense.decoders.xml
+sudo nano /var/ossec/etc/decoders/opnsense_decoders.xml
 ```
 2) Add a custom decoder blocks into file & Save:
 ```
@@ -484,8 +486,10 @@ sudo nano /var/ossec/etc/decoders.d/opnsense_decoders.xml
 ```
 3) Create custom rules on Wazuh Server to utilize decoder configuration:
 ```
-sudo touch /var/ossec/etc/rules/opnsense_lab_rules.xml
-sudo nano  /var/ossec/etc/rules/opnsense_lab_rules.xml
+cd /var/ossec/etc/rules/
+ls
+touch opnsense_rules.xml
+sudo nano /var/ossec/etc/rules/opnsense_rules.xml
 ```
 4) Add to file:
 ```
