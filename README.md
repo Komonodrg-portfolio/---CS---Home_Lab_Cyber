@@ -542,4 +542,101 @@ sudo nano  /var/ossec/etc/rules/opnsense_lab_rules.xml
 ```
 sudo systemctl restart wazuh-manager
 ```
+
+<details>
+ <summary><h4><b>AI Assisted Log Generation Testing</b></h4></summary>
+
+---
+
+## **1️⃣ OPNsense Lab Setup**
+
+### a) **Interfaces**
+
+* **WAN** – connect to your lab network / internet (simulate attacks from outside).
+* **LAN** – main lab subnet.
+* **LAB VLAN** – isolated test VLAN for generating controlled traffic.
+
+---
+
+### b) **Enable Logging**
+
+* **Firewall → Settings → Advanced**: Enable `Log packets that are blocked`.
+* **VPN → OpenVPN / WireGuard**: Enable detailed logs.
+* **IDS → Suricata**: Enable `Logging` to local syslog (facility local1).
+
+---
+
+### c) **Enable Syslog Forwarding to Wazuh**
+
+* **System → Settings → Logging / Targets**
+
+  * Remote Syslog Server: Wazuh IP
+  * Facility: map decoders (`local0` = firewall, `local1` = Suricata, etc.)
+  * Protocol: UDP (simpler for lab)
+
+---
+
+## **2️⃣ Test Event Scenarios**
+
+### a) **Firewall Block**
+
+1. Add a temporary block rule:
+
+   * Source: LAB VLAN
+   * Destination: WAN IP (or Internet IP)
+   * Action: Block
+2. Try to access that destination from a host in LAB VLAN.
+3. This will generate a `filterlog` entry, triggering your firewall decoder & Wazuh rule `100001`.
+
+---
+
+### b) **VPN Authentication Failure**
+
+1. For **WireGuard**:
+
+   * Attempt a connection from a wrong key / wrong endpoint.
+2. For **OpenVPN**:
+
+   * Try logging in with an invalid username or password.
+3. This will trigger `opnsense-VPN_wireguard` or `opnsense-VPN_openvpn` decoders and Wazuh rules `100002` / `100003`.
+
+---
+
+### c) **Suricata IDS Alerts**
+
+1. Enable a **basic set of rules** (Emerging Threats / ET Open).
+2. Use a test tool to generate suspicious traffic:
+
+   * `nmap -sS` against your LAB VLAN gateway
+   * `curl` with malformed HTTP headers (ET rules catch this)
+3. Logs will go to `opnsense-suricata` decoder and Wazuh rule `100004`.
+
+---
+
+### d) **DNS Test**
+
+1. Query a non-existent domain (`dig nonexistent.test`) from LAN or LAB VLAN.
+2. Generates NXDOMAIN response → triggers Wazuh rule `100005`.
+
+---
+
+## **3️⃣ Tips for Lab Logging**
+
+* Only enable **what you want to test** to reduce noise. For example:
+
+  * Firewall: log only blocked packets (not passed traffic)
+  * VPN: log only failed connections
+  * Suricata: enable only critical / ET Open rules initially
+* Use `tail -f /var/log/filterlog` (or syslog) to watch events before sending to Wazuh.
+* Adjust Wazuh rule levels so lab alerts are noticeable (e.g., `level=10-12`).
+
+---
+
+### ✅ **Result**
+
+* With this setup, every test scenario will trigger the corresponding decoder and Wazuh rule.
+* You can safely test alerts without flooding your lab with every connection or packet.
+
+</detail>
+
 </details>
