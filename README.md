@@ -661,7 +661,72 @@ For comprehensive log analysis, I've decided to forward 3 types of logs:
 | Osquery | Scheduled queries & system state hunting: Pros - Great for hunting & snapshots, Cons - Not real-time for everything (interval-based)      |
 
 
+<h4> Installation of Log Types on Linux (Mint) </h4>
 
-<h4> Setup and Initiate Different Syslog Streams to Forward </h4>
+Auditd:
+```
+Installation
+  └─ sudo apt install auditd audispd-plugins
+
+Enable on Boot & Start Service
+  └─ sudo systemctl enable auditd
+     sudo systemctl start auditd
+
+Verify Status
+  └─ sudo systemctl status auditd
+
+Confirm Auditd Logs Being Written
+  └─ sudo tail -f /var/log/audit/audit.log
+  └─ Will generate processes for telemetry in next section
+  └─ should see entries like type=DAEMON_START or type=CONFIG_CHANGE ✅
+```
+Sysmon:
+```
+Installation
+  └─ Install Prereqs
+    └─ sudo apt update
+       sudo apt install -y git cmake g++ make libsystemd-dev libaudit-dev
+
+Clone Symon for Linux Repo
+  └─ git clone https://github.com/Sysinternals/SysmonForLinux.git
+     cd SysmonForLinux
+
+ Build Sysmon
+  └─ mkdir build
+     cd build
+     cmake ..
+     make
+
+Install Sysmon Binaries
+  └─ sudo make install
+
+Install Sysmon Config file (using SwiftonLinux)
+  └─ wget https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml -O config.xml
+     sudo sysmon --install config.xml
+
+Start Sysmon & Enable on Boot
+  └─ sudo systemctl start sysmon
+     sudo systemctl enable sysmon
+
+Verify Logs being written
+  └─ sudo tail -f /var/log/syslog/
+     sudo tail -f /var/log/syslog | grep Sysmon        #watch live log creation
+  └─ Will generate events to produce live telemtry in next section
+```
+Osquery
+```
+  
+
+  
+
+  
+
+
+
+
+```
+
+
+
 
 </details>
