@@ -641,6 +641,27 @@ sudo systemctl restart wazuh-manager
 * With this setup, every test scenario will trigger the corresponding decoder and Wazuh rule.
 * You can safely test alerts without flooding your lab with every connection or packet.
 
-</detail>
+</details>
+
+</details>
+
+
+<details>
+ <summary><h4><b>  e)  Linux Mint (Victim) VM Setup</b></h4></summary>
+  <br> 
+
+Decision to add a Linux instance to cyber range based on providing a platform to test / detect Linux server based attack vectors and gain incite on IOCs.<br>
+<br>
+For comprehensive log analysis, I've decided to forward 3 types of logs:
+
+| Logs      | Purpose                              |
+|------------|--------------------------------------|
+| Auditd | Kernel-level, mandatory access control: Pros - Near-perfect visibility into system calls, Cons - Harder to interpret raw logs          |
+| Sysmon | Real-time behavioral monitoring: Pros: Best visibility into attack chains, Cons: Needs tuning (can be noisy)        |
+| Osquery | Scheduled queries & system state hunting: Pros - Great for hunting & snapshots, Cons - Not real-time for everything (interval-based)      |
+
+
+
+<h4> Setup and Initiate Different Syslog Streams to Forward </h4>
 
 </details>
