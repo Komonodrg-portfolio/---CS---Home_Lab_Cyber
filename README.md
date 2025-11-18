@@ -685,23 +685,17 @@ Confirm Auditd Logs Being Written
  
 Sysmon:
 ```
-Installation
-  └─ Install Prereqs
-    └─ sudo apt update
-       sudo apt install -y git cmake g++ make libsystemd-dev libaudit-dev
+# 1. Download and register the Microsoft GPG key
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
+sudo install -o root -g root -m 644 microsoft.asc.gpg /etc/apt/trusted.gpg.d/
 
-Clone Symon for Linux Repo
-  └─ git clone https://github.com/Sysinternals/SysmonForLinux.git
-     cd SysmonForLinux
+# 2. Add the Microsoft package source list. 
+# We use the Debian 11 config, which is compatible with Mint's base.
+wget -q https://packages.microsoft.com/config/debian/11/prod.list
+sudo mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
 
- Build Sysmon
-  └─ mkdir build
-     cd build
-     cmake ..
-     make
-
-Install Sysmon Binaries
-  └─ sudo make install
+# 3. Update your package index
+sudo apt update
 
 Install Sysmon Config file (using SwiftonLinux)
   └─ wget https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml -O config.xml
