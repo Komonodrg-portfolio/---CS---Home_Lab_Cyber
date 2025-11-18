@@ -647,7 +647,7 @@ sudo systemctl restart wazuh-manager
 
 
 <details>
- <summary><h4><b>  e)  Linux Mint (Victim) VM Setup</b></h4></summary>
+ <summary><h4><b>  E)  Linux Mint (Victim) VM Setup</b></h4></summary>
   <br> 
 
 Decision to add a Linux instance to cyber range based on providing a platform to test / detect Linux server based attack vectors and gain incite on IOCs.<br>
@@ -680,6 +680,9 @@ Confirm Auditd Logs Being Written
   └─ Will generate processes for telemetry in next section
   └─ should see entries like type=DAEMON_START or type=CONFIG_CHANGE ✅
 ```
+<p align="center">
+  <img src="images/Linux1.png" width="1000" />
+ 
 Sysmon:
 ```
 Installation
