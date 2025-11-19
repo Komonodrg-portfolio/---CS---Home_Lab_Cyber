@@ -786,18 +786,115 @@ Test osqueryi:
 
 Should present a table lsiting PROCESS ID to PROGRAM NAME correlation.
 
-Edit OSquery configuration file:
+Edit OSqueryd configuration file:
+  └─  sudo mkdir -p /etc/osquery
+      sudo nano /etc/osquery/osquery.conf
 
+... copy this into contents of file & save:
+-------------------------------------------
+{
+  "options": {
+    "config_plugin": "filesystem",
+    "logger_plugin": "filesystem",
+    "logger_path": "/var/log/osquery",
+    "disable_logging": "false",
+    "schedule_splay_percent": 10,
+    "worker_threads": 2,
+    "events_optimize_write": true,
+    "host_identifier": "hostname",
+    "pid_file": "/var/run/osqueryd.pid",
 
+    "verbose": "true",
+    "enable_monitor": "true"
+  },
 
+  "schedule": {
+    "1_established_network_connections": {
+      "query": "SELECT p.pid, p.name, pos.remote_address, pos.remote_port, pos.state FROM processes p JOIN process_open_sockets pos ON p.pid = pos.pid WHERE pos.state = 'ESTABLISHED' AND pos.protocol = 6 AND pos.remote_address NOT IN ('127.0.0.1', '::1') AND pos.remote_port NOT IN (22, 80, 443, 53) ORDER BY pos.remote_address;",
+      "interval": 15,
+      "description": "Active TCP connections excluding common ports (fast-test mode)."
+    },
+    
+    "2_uncommon_process_paths": {
+      "query": "SELECT pid, name, path, cmdline, datetime(start_time, 'unixepoch') AS start_time_local FROM processes WHERE path LIKE '/home/%/%%' OR path LIKE '/tmp/%%' OR path LIKE '/dev/shm/%%' OR path LIKE '/var/tmp/%%';",
+      "interval": 20,
+      "description": "Detects processes running from abnormal directories (fast-test mode)."
+    },
+    
+    "3_new_startup_items": {
+      "query": "SELECT * FROM startup_items WHERE type != 'systemd-unit' AND path NOT LIKE '/etc/rc%.d/%%' AND path NOT LIKE '/etc/init.d/%%';",
+      "interval": 30,
+      "description": "Monitors non-standard startup persistence (fast-test mode)."
+    },
 
+    "4_unusual_cron_jobs": {
+      "query": "SELECT c.user, c.command, c.path, c.interval FROM crontab c WHERE c.path NOT LIKE '/etc/cron.d/%%' AND c.path NOT LIKE '/etc/cron.hourly/%%';",
+      "interval": 30,
+      "description": "Looks for user-created cron jobs (fast-test mode)."
+    },
+    
+    "5_new_sudoers_file_changes": {
+      "query": "SELECT path, uid, gid, mode, type, datetime(atime, 'unixepoch') AS access_time, datetime(mtime, 'unixepoch') AS modification_time FROM file WHERE path IN ('/etc/sudoers', '/etc/sudoers.d/osquery');",
+      "interval": 30,
+      "description": "Monitors sudoers file changes (fast-test mode)."
+    }
+  },
+
+  "file_paths": {
+    "linux_persistence": [
+      "/etc/rc.local",
+      "/etc/profile",
+      "/etc/bash.bashrc",
+      "/etc/update-motd.d/%%",
+      "/home/%%/.bashrc",
+      "/home/%%/.profile"
+    ]
+  },
   
+  "fim_paths": {
+    "linux_system_bins": [
+      "/usr/bin/%%",
+      "/bin/%%"
+    ]
+  },
 
+  "events": {
+    "disable_events": false
+  }
+}
 
+-------------------------------------------
 
+Start and Enable (on boot) Osqueryd:
+  └─ sudo systemctl enable osqueryd
+     sudo systemctl start osqueryd
+
+Check Status:
+  └─ systemctl status osqueryd
+
+Verify Log Creattion: Note polling intervals set low to generate logs:
+  └─ sudo tail -f  /var/log/osquery/osqueryd.results.log
+
+| - TIPS - |
+
+You may have instances where multiple instances of osquery are running,
+preventing it from generating logs properly.  Triage according:
+
+Debug startup, to see errors:
+ └─ sudo osqueryd --flagfile=/etc/osquery/osquery.flags --verbose
+
+Find and kill instances of multiple:
+  └─ ps aux | grep osqueryd
+  └─ sudo kill -9 <PID>
+
+Stop, Restart osqueryd service & recheck logs:
+  └─ sudo systemctl restart osqueryd
+     sudo systemctl status osqueryd
+     sudo tail -f /var/log/osquery/osqueryd.results.log
 
 ```
-
+<p align="center">
+  <img src="images/Linux3.png" width="1000" />
 
 
 
