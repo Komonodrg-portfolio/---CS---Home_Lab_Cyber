@@ -761,9 +761,35 @@ Verify Logs being written
  
 Osquery
 ```
-  
+Add OSQUERY Repository Key which verifies the authenticity of
+the packages you download from the osquery repository:
+  └─ export OSQUERY_KEY=1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
 
-  
+Add the key to your system
+  └─ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys $OSQUERY_KEY
+
+Add the Osquery repository for Debian/Ubuntu
+  └─ sudo add-apt-repository 'deb [arch=amd64] https://pkg.osquery.io/deb deb main'
+
+Update your local package index
+  └─ sudo apt update
+
+Install the osquery package
+  └─ sudo apt install osquery -y
+
+After installation, you have two main ways to use osquery:
+the interactive shell (osqueryi) and the long-running daemon (osqueryd).
+
+Test osqueryi:
+  └─ osqueryi
+  └─ SELECT pid, name FROM processes LIMIT 5;
+
+Should present a table lsiting PROCESS ID to PROGRAM NAME correlation.
+
+Edit OSquery configuration file:
+
+
+
 
   
 
