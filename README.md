@@ -685,21 +685,67 @@ Confirm Auditd Logs Being Written
  
 Sysmon:
 ```
-# 1. Download and register the Microsoft GPG key
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
-sudo install -o root -g root -m 644 microsoft.asc.gpg /etc/apt/trusted.gpg.d/
+Download and register the Microsoft GPG key
+  └─ wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.asc.gpg
+     sudo install -o root -g root -m 644 microsoft.asc.gpg /etc/apt/trusted.gpg.d/
 
-# 2. Add the Microsoft package source list. 
-# We use the Debian 11 config, which is compatible with Mint's base.
-wget -q https://packages.microsoft.com/config/debian/11/prod.list
-sudo mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
+Add the Microsoft package source list via the Debian 11 config, which is compatible with Mint's base.
+  └─ wget -q https://packages.microsoft.com/config/debian/11/prod.list
+     sudo mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
 
-# 3. Update your package index
-sudo apt update
+Install the SysmonforLinux package
+  └─ sudo apt install sysmonforlinux
 
-Install Sysmon Config file (using SwiftonLinux)
-  └─ wget https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml -O config.xml
-     sudo sysmon --install config.xml
+Update your package index
+  └─ sudo apt update
+
+Create custom config.xml file which will only key on:
+- Process Creates & Terminates
+- Network Connections
+- Raw Access Reads
+- Process Access
+- File Creations & Deletions
+  └─ cd etc
+     sudo mkdir sysmon
+     sudo nano config.xml
+
+ ... paste this text into the file and save:
+
+<Sysmon schemaversion="4.70">
+  <EventFiltering>
+    <!-- Event ID 1 == ProcessCreate. Log all newly created processes -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessCreate onmatch="exclude"/>
+    </RuleGroup>
+    <!-- Event ID 3 == NetworkConnect Detected. Log all network connections -->
+    <RuleGroup name="" groupRelation="or">
+      <NetworkConnect onmatch="exclude"/>
+    </RuleGroup>
+    <!-- Event ID 5 == ProcessTerminate. Log all processes terminated -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessTerminate onmatch="exclude"/>
+    </RuleGroup>
+    <!-- Event ID 9 == RawAccessRead. Log all raw access read -->
+    <RuleGroup name="" groupRelation="or">
+      <RawAccessRead onmatch="exclude"/>
+    </RuleGroup>
+    <!-- Event ID 10 == ProcessAccess. Log all open process operations -->
+    <RuleGroup name="" groupRelation="or">
+      <ProcessAccess onmatch="exclude"/>
+    </RuleGroup>
+    <!-- Event ID 11 == FileCreate. Log every file creation -->
+    <RuleGroup name="" groupRelation="or">
+      <FileCreate onmatch="exclude"/>
+    </RuleGroup>
+    <!--Event ID 23 == FileDelete. Log all files being deleted -->
+    <RuleGroup name="" groupRelation="or">
+      <FileDelete onmatch="exclude"/>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>
+
+Install Sysmon with Config file created:
+  └─ sudo sysmon -i /etc/sysmon/config.xml
 
 Start Sysmon & Enable on Boot
   └─ sudo systemctl start sysmon
@@ -710,6 +756,9 @@ Verify Logs being written
      sudo tail -f /var/log/syslog | grep Sysmon        #watch live log creation
   └─ Will generate events to produce live telemtry in next section
 ```
+<p align="center">
+  <img src="images/Linux2.png" width="1000" />
+ 
 Osquery
 ```
   
